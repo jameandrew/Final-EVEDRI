@@ -134,6 +134,18 @@
       <DependentUpon>frmInactive.cs</DependentUpon>
     </Compile>
     <Compile Include="frmLags.cs" />
+    <Compile Include="frmUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUpdate.Designer.cs">
+      <DependentUpon>frmUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmUpdateInActive.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUpdateInActive.Designer.cs">
+      <DependentUpon>frmUpdateInActive.cs</DependentUpon>
+    </Compile>
     <Compile Include="Getname.cs" />
     <Compile Include="LogIn.cs">
       <SubType>Form</SubType>
@@ -160,6 +172,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmInactive.resx">
       <DependentUpon>frmInactive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUpdate.resx">
+      <DependentUpon>frmUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUpdateInActive.resx">
+      <DependentUpon>frmUpdateInActive.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LogIn.resx">
       <DependentUpon>LogIn.cs</DependentUpon>

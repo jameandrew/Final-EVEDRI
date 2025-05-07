@@ -22,8 +22,8 @@ namespace array
         public frmDashboard(string name)
         {
             InitializeComponent();
-            lblTotalAct.Text = ShowTotal(9, "1").ToString();
-            lblTotalInact.Text = ShowTotal(9, "0").ToString();
+            lblTotalAct.Text = ShowTotal(11, "1").ToString();
+            lblTotalInact.Text = ShowTotal(11, "0").ToString();
             lblTotalMale.Text = ShowTotal(2, "Male").ToString();
             lblTotalFemale.Text = ShowTotal(2, "Female").ToString();
             lblRed.Text = ShowTotal(4, "Red").ToString();
@@ -38,7 +38,6 @@ namespace array
             studname = name;
             btnStuName.Text = name;
         }
-
         public int ShowTotal(int count, string values)
         {
             workbook.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
@@ -56,18 +55,11 @@ namespace array
             }
             return total;
         }
-
-        public void ShowName(string Name)
-        {
-            btnStuName.Text = Name;
-        }
-
         private void timer1_Tick(object sender, EventArgs e) 
         {
             btnTIme.Text = DateTime.Now.ToString("hh: mm: ss tt");
             btnDate.Text = DateTime.Now.ToString("MM/ dd/ yyyy");
         }
-       
         private void frmDashboard_Load(object sender, EventArgs e)
         {
             timer1.Start();
@@ -99,19 +91,17 @@ namespace array
             ActStudent.Show();
             this.Hide();
         }
-
         private void btnInactStud_Click(object sender, EventArgs e)
         {
             frmInactive inactive = new frmInactive(studname);
             inactive.Show();
-            this.Hide();
+            this.Hide();  
         }
-
         private void guna2Button1_Click(object sender, EventArgs e)
         {
             lags.Lags(btnStuName.Text, "Log-Out");
             LogIn logIn = new LogIn();
-            logIn.ShowDialog();
+            logIn.Show();
             this.Hide();
         }
     }

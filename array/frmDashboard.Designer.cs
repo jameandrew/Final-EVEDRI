@@ -680,7 +680,7 @@
             this.guna2Button2.Name = "guna2Button2";
             this.guna2Button2.Size = new System.Drawing.Size(249, 45);
             this.guna2Button2.TabIndex = 53;
-            this.guna2Button2.Text = "Lags";
+            this.guna2Button2.Text = "Logs";
             this.guna2Button2.Click += new System.EventHandler(this.guna2Button2_Click);
             // 
             // btnInactStud

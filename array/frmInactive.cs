@@ -20,27 +20,28 @@ namespace array
         public frmInactive(string name)
         {
             InitializeComponent();
-            ShowInactiveStud("0");
+            LoadInActiveStudents();
             studname = name;
             btnStuName.Text = name;
         }
 
-        public void ShowInactiveStud(string Status)
+        public void LoadInActiveStudents()
         {
-            Workbook workbook = new Workbook();
-            workbook.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
-            Worksheet sheet = workbook.Worksheets[0];
-            DataTable dt = sheet.ExportDataTable();
-            DataRow[] i = dt.Select("STATUS = " + Status);
+            Workbook book = new Workbook();
+            book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
+            Worksheet sheet = book.Worksheets[0];
 
-            foreach (DataRow row in i)
+            DataTable dt = sheet.ExportDataTable();
+
+            DataRow[] activeRows = dt.Select("STATUS = '0'");
+            DataTable filtered = dt.Clone(); 
+
+            foreach (DataRow row in activeRows)
             {
-                dgvActive.Rows.Add
-                (
-                    row[0].ToString(), row[1].ToString(), row[2].ToString(), row[3].ToString(), row[4].ToString(),
-                    row[5].ToString(), row[6].ToString(), row[7].ToString(), row[8].ToString()
-                );
+                filtered.ImportRow(row);
             }
+
+            dgvActive.DataSource = filtered;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -59,7 +60,7 @@ namespace array
         {
             lags.Lags(btnStuName.Text, "Log-Out");
             LogIn logIn = new LogIn();
-            logIn.ShowDialog();
+            logIn.Show();
             this.Hide();
         }
 
@@ -71,34 +72,34 @@ namespace array
         private void btnDashboard_Click(object sender, EventArgs e)
         {
             frmDashboard dashboard = new frmDashboard(studname);
-            dashboard.ShowDialog();
+            dashboard.Show();
             this.Hide();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
             frmAddStudent student = new frmAddStudent(studname);
-            student.ShowDialog();
+            student.Show();
             this.Hide();
         }
 
         private void btnActSud_Click(object sender, EventArgs e)
         {
             frmActive student = new frmActive(studname);
-            student.ShowDialog();
+            student.Show();
             this.Hide();
         }
 
         private void guna2Button2_Click(object sender, EventArgs e)
         {
             frmHistoryLags history = new frmHistoryLags(studname);
-            history.ShowDialog();
+            history.Show();
             this.Hide();
         }
 
         private void dgvAvtive_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            frmAddStudent form = new frmAddStudent(studname);
+            frmUpdateInActive form = new frmUpdateInActive();
             int r = dgvActive.CurrentCell.RowIndex;
             form.lblID.Text = r.ToString();
             form.txtName.Text = dgvActive.Rows[r].Cells[0].Value.ToString();
@@ -163,13 +164,9 @@ namespace array
             form.txtSaying.Text = saying;
             form.txtUname.Text = Username;
             form.txtPword.Text = Password;
-            form.cmbCourse.Text = Course;
-
-            form.btnSubmit.Visible = false;
-            form.btnUpdate.Visible = true;
+            form.cmbCourse.Text = Course;            
 
             form.Show();
-            this.Hide();
         }
 
         private void guna2Button5_Click(object sender, EventArgs e)
@@ -187,55 +184,7 @@ namespace array
             dgvActive.DataSource = dt;
         }
 
-        //private void guna2Button4_Click(object sender, EventArgs e)
-        //{
-        //    Workbook book = new Workbook();
-        //    book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
 
-        //    Worksheet sheet = book.Worksheets[0];
-
-        //    frmAddStudent addstudent = (frmAddStudent)Application.OpenForms["frmAddStudent"];
-        //    int r = dgvActive.CurrentCell.RowIndex;
-
-        //    if(!string.IsNullOrWhiteSpace(addstudent.txtName.Text))
-        //    {
-        //        dgvActive.Rows[r].Cells[0].Value = addstudent.txtName.Text;
-        //    }
-
-        //    string gender = "";
-        //    if(addstudent.rdbMale.Checked == true)
-        //    {
-        //        dgvActive.Rows[r].Cells[1].Value = addstudent.rdbMale.Text;
-        //    }
-        //    if(addstudent.rdbFemale.Checked == true)
-        //    {
-        //        dgvActive.Rows[r].Cells[1].Value = addstudent.rdbFemale.Text;
-        //    }
-
-        //    string hobbies = "";
-        //    if (addstudent.chkBasketball.Checked == true) hobbies += addstudent.chkBasketball.Text + " , ";
-        //    if (addstudent.chkVolleyball.Checked == true) hobbies += addstudent.chkVolleyball.Text + " , ";
-        //    if (addstudent.chkBadminton.Checked == true) hobbies += addstudent.chkBadminton.Text + " , ";
-        //    dgvActive.Rows[r].Cells[2].Value = hobbies.Trim();
-
-        //    if (addstudent.cmbColor.SelectedIndex != null) dgvActive.Rows[r].Cells[3].Value = addstudent.cmbColor.Text;
-        //    if (addstudent.cmbCourse.SelectedIndex != null) dgvActive.Rows[r].Cells[7].Value = addstudent.cmbCourse.Text;
-        //    if (!string.IsNullOrWhiteSpace(addstudent.txtSaying.Text)) dgvActive.Rows[r].Cells[4].Value = addstudent.txtSaying.Text;
-
-        //    if(!string.IsNullOrWhiteSpace(addstudent.txtUname.Text)) dgvActive.Rows[r].Cells[5].Value = addstudent.txtUname.Text;
-        //    if(!string.IsNullOrWhiteSpace(addstudent.txtPword.Text)) dgvActive.Rows[r].Cells[6].Value = addstudent.txtPword.Text;
-
-        //    int row = (Convert.ToInt32(addstudent.lblID.Text)) + 2;
-
-        //    sheet.Range[row, 1].Value = addstudent.txtName.Text;
-        //    sheet.Range[row, 2].Value = gender;
-        //    sheet.Range[row, 3].Value = hobbies;
-        //    sheet.Range[row, 4].Value = addstudent.cmbColor.Text;
-        //    sheet.Range[row, 5].Value = addstudent.txtSaying.Text;
-        //    sheet.Range[row, 6].Value = addstudent.txtUname.Text;
-        //    sheet.Range[row, 7].Value = addstudent.txtPword.Text;
-        //    sheet.Range[row, 8].Value = addstudent.cmbCourse.Text;
-        //}
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
@@ -247,19 +196,46 @@ namespace array
                 return;
             }
 
-            foreach (DataGridViewRow row in dgvActive.Rows)
-            {
-                row.Visible = false;
+            // Reload the active students to get the original DataTable
+            Workbook book = new Workbook();
+            book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
+            Worksheet sheet = book.Worksheets[0];
+            DataTable dt = sheet.ExportDataTable();
 
-                foreach (DataGridViewCell cell in row.Cells)
+            DataRow[] activeRows = dt.Select("STATUS = '1'");
+            DataTable filtered = dt.Clone();
+
+            foreach (DataRow row in activeRows)
+            {
+                // Check all columns if any cell contains the search term
+                if (row.ItemArray.Any(cell => cell != null && cell.ToString().ToLower().Contains(searchValue)))
                 {
-                    if (cell.Value != null && cell.Value.ToString().ToLower().Contains(searchValue))
-                    {
-                        row.Visible = true;
-                        break;
-                    }
+                    filtered.ImportRow(row);
                 }
             }
+
+            dgvActive.DataSource = filtered;
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+
+
+            DialogResult result = MessageBox.Show("Do you want to restore this student?", "Confirm Restore", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result != DialogResult.Yes)
+                return;
+
+            Workbook book = new Workbook();
+            book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
+            Worksheet sheet = book.Worksheets[0];
+
+            int row = dgvActive.CurrentCell.RowIndex + 2;
+            sheet.Range[row, 11].Value = "1";
+
+            book.SaveToFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx", ExcelVersion.Version2016);
+
+            LoadInActiveStudents();
+            MessageBox.Show("Student marked as active.");
         }
     }
 }

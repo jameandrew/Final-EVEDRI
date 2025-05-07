@@ -42,7 +42,7 @@ namespace array
         {
             lags.Lags(btnStuName.Text, "Log-Out");
             LogIn logIn = new LogIn();
-            logIn.ShowDialog();
+            logIn.Show();
             this.Hide();
         }
 

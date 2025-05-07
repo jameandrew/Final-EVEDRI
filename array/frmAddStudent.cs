@@ -27,6 +27,7 @@ namespace array
         string Username = "";
         string Password = "";
         string Course = "";
+        string Email = "";
         public frmAddStudent(string name)
         {
             InitializeComponent();
@@ -46,7 +47,8 @@ namespace array
         {
             if(string.IsNullOrWhiteSpace(txtName.Text) || string.IsNullOrWhiteSpace(txtEmail.Text)
                || string.IsNullOrWhiteSpace(txtPword.Text) || string.IsNullOrWhiteSpace(txtSaying.Text)
-               || string.IsNullOrWhiteSpace(txtUname.Text) || string.IsNullOrWhiteSpace(txtPfp.Text) || string.IsNullOrWhiteSpace(txtPfp.Text))
+               || string.IsNullOrWhiteSpace(txtUname.Text) || string.IsNullOrWhiteSpace(txtPfp.Text) || 
+               string.IsNullOrWhiteSpace(txtPfp.Text))
             {
                 MessageBox.Show("Please Input the empty fields", "ERROR", MessageBoxButtons.RetryCancel, MessageBoxIcon.Exclamation);
                 return;
@@ -80,6 +82,7 @@ namespace array
             Username = "";
             Password = "";
             Course = "";
+            Email = "";
 
             if (!Getname.EmailValid(txtEmail.Text))
             {
@@ -147,6 +150,13 @@ namespace array
             {
                 Course += cmbCourse.Text;
             }
+            if (!string.IsNullOrWhiteSpace(txtEmail.Text))
+            {
+                Email += txtEmail.Text;
+            }
+            
+            int age = DateTime.Now.Year - dtpAge.Value.Year;
+            if (DateTime.Now < dtpAge.Value.AddYears(age)) age--;
 
             int row = sheet.Rows.Length + 1;
 
@@ -158,8 +168,11 @@ namespace array
             sheet.Range[row, 6].Value = txtUname.Text;
             sheet.Range[row, 7].Value = txtPword.Text;
             sheet.Range[row, 8].Value = cmbCourse.Text;
-            sheet.Range[row, 9].Value = "1";
+            sheet.Range[row, 9].Value = age.ToString();
+            sheet.Range[row, 10].Value = txtEmail.Text;
+            sheet.Range[row, 11].Value = "1";
             book.SaveToFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx", ExcelVersion.Version2016);
+
             DataTable dt = sheet.ExportDataTable();
             frm.dgvData.DataSource = dt;
 
@@ -174,6 +187,7 @@ namespace array
             txtUname.Clear();
             txtPword.Clear();
             cmbCourse.SelectedIndex = -1;
+            txtEmail.Clear();
         }
 
         private void btnDisplayAll_Click(object sender, EventArgs e)

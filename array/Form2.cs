@@ -45,7 +45,7 @@ namespace array
             Worksheet sheet = book.Worksheets[0];
 
             int row = dgvData.CurrentCell.RowIndex + 2;
-            sheet.Range[row, 9].Value = "0";
+            sheet.Range[row, 11].Value = "0";
 
             book.SaveToFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx", ExcelVersion.Version2016);
 
@@ -141,13 +141,15 @@ namespace array
 
             string Course = dgvData.Rows[r].Cells[7].Value.ToString();
 
+            string Age = dgvData.Rows[r].Cells[9].Value.ToString();
+
+            string Profile = dgvData.Rows[r].Cells[10].Value.ToString();
+
             form.txtSaying.Text = saying;
             form.txtUname.Text = Username;
             form.txtPword.Text = Password;
             form.cmbCourse.Text = Course;
 
-            form.btnSubmit.Visible = false;
-            form.btnUpdate.Visible = true;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

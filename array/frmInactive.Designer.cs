@@ -45,16 +45,8 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.guna2Button3 = new Guna.UI2.WinForms.Guna2Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Course = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnSearch = new Guna.UI2.WinForms.Guna2Button();
+            this.btnDelete = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvActive)).BeginInit();
             this.guna2CustomGradientPanel5.SuspendLayout();
@@ -159,7 +151,7 @@
             this.guna2Button2.Name = "guna2Button2";
             this.guna2Button2.Size = new System.Drawing.Size(249, 45);
             this.guna2Button2.TabIndex = 53;
-            this.guna2Button2.Text = "Lags";
+            this.guna2Button2.Text = "Logs";
             this.guna2Button2.Click += new System.EventHandler(this.guna2Button2_Click);
             // 
             // btnInactStud
@@ -232,16 +224,6 @@
             this.dgvActive.BackgroundColor = System.Drawing.Color.White;
             this.dgvActive.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvActive.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvActive.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4,
-            this.Column5,
-            this.Column6,
-            this.Column7,
-            this.Course,
-            this.Column8});
             this.dgvActive.Location = new System.Drawing.Point(304, 92);
             this.dgvActive.Name = "dgvActive";
             this.dgvActive.Size = new System.Drawing.Size(703, 503);
@@ -306,51 +288,6 @@
             this.txtSearch.Size = new System.Drawing.Size(194, 26);
             this.txtSearch.TabIndex = 33;
             // 
-            // Column8
-            // 
-            this.Column8.HeaderText = "Status";
-            this.Column8.Name = "Column8";
-            // 
-            // Course
-            // 
-            this.Course.HeaderText = "Course";
-            this.Course.Name = "Course";
-            // 
-            // Column7
-            // 
-            this.Column7.HeaderText = "Password";
-            this.Column7.Name = "Column7";
-            // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "Username";
-            this.Column6.Name = "Column6";
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "Saying";
-            this.Column5.Name = "Column5";
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Favorite";
-            this.Column4.Name = "Column4";
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Hobbies";
-            this.Column3.Name = "Column3";
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Gender";
-            this.Column2.Name = "Column2";
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Name";
-            this.Column1.Name = "Column1";
-            // 
             // btnSearch
             // 
             this.btnSearch.Animated = true;
@@ -370,12 +307,32 @@
             this.btnSearch.Text = "Search";
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Animated = true;
+            this.btnDelete.BorderRadius = 5;
+            this.btnDelete.BorderThickness = 1;
+            this.btnDelete.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnDelete.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnDelete.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnDelete.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnDelete.FillColor = System.Drawing.Color.Red;
+            this.btnDelete.Font = new System.Drawing.Font("Mongolian Baiti", 12F, System.Drawing.FontStyle.Bold);
+            this.btnDelete.ForeColor = System.Drawing.Color.White;
+            this.btnDelete.Location = new System.Drawing.Point(584, 610);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(180, 45);
+            this.btnDelete.TabIndex = 35;
+            this.btnDelete.Text = "Restore";
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
             // frmInactive
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Azure;
             this.ClientSize = new System.Drawing.Size(1059, 681);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.guna2Button3);
@@ -410,16 +367,8 @@
         private System.Windows.Forms.Timer timer1;
         private Guna.UI2.WinForms.Guna2Button guna2Button3;
         public System.Windows.Forms.DataGridView dgvActive;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Course;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private Guna.UI2.WinForms.Guna2Button btnSearch;
         private System.Windows.Forms.TextBox txtSearch;
+        private Guna.UI2.WinForms.Guna2Button btnDelete;
     }
 }
