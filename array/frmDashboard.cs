@@ -37,6 +37,15 @@ namespace array
             lblBSFM.Text = ShowTotal(8, "BSFM").ToString();
             studname = name;
             btnStuName.Text = name;
+            if (!string.IsNullOrEmpty(Getname.ProfileImagePath) && System.IO.File.Exists(Getname.ProfileImagePath))
+            {
+                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBox1.Image = Image.FromFile(Getname.ProfileImagePath);
+            }
+            else
+            {
+                pictureBox1.Image = null;
+            }
         }
         public int ShowTotal(int count, string values)
         {

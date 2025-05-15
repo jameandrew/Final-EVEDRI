@@ -43,6 +43,8 @@
             this.dgvLags = new System.Windows.Forms.DataGridView();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.guna2Button3 = new Guna.UI2.WinForms.Guna2Button();
+            this.btnSearch = new Guna.UI2.WinForms.Guna2Button();
+            this.txtSearch = new System.Windows.Forms.TextBox();
             this.guna2CustomGradientPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLags)).BeginInit();
@@ -171,7 +173,7 @@
             this.guna2Button2.Name = "guna2Button2";
             this.guna2Button2.Size = new System.Drawing.Size(249, 45);
             this.guna2Button2.TabIndex = 53;
-            this.guna2Button2.Text = "Lags";
+            this.guna2Button2.Text = "Logs";
             // 
             // btnInactStud
             // 
@@ -244,9 +246,9 @@
             this.dgvLags.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvLags.BackgroundColor = System.Drawing.Color.White;
             this.dgvLags.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvLags.Location = new System.Drawing.Point(282, 70);
+            this.dgvLags.Location = new System.Drawing.Point(282, 130);
             this.dgvLags.Name = "dgvLags";
-            this.dgvLags.Size = new System.Drawing.Size(744, 540);
+            this.dgvLags.Size = new System.Drawing.Size(744, 480);
             this.dgvLags.TabIndex = 21;
             // 
             // timer1
@@ -270,12 +272,41 @@
             this.guna2Button3.Text = "X";
             this.guna2Button3.Click += new System.EventHandler(this.guna2Button3_Click);
             // 
+            // btnSearch
+            // 
+            this.btnSearch.Animated = true;
+            this.btnSearch.BorderRadius = 5;
+            this.btnSearch.BorderThickness = 1;
+            this.btnSearch.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnSearch.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnSearch.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnSearch.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnSearch.FillColor = System.Drawing.Color.RoyalBlue;
+            this.btnSearch.Font = new System.Drawing.Font("Mongolian Baiti", 11.25F);
+            this.btnSearch.ForeColor = System.Drawing.Color.White;
+            this.btnSearch.Location = new System.Drawing.Point(948, 98);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(71, 26);
+            this.btnSearch.TabIndex = 36;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Font = new System.Drawing.Font("Mongolian Baiti", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSearch.Location = new System.Drawing.Point(749, 98);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(194, 26);
+            this.txtSearch.TabIndex = 35;
+            // 
             // frmHistoryLags
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Azure;
             this.ClientSize = new System.Drawing.Size(1059, 681);
+            this.Controls.Add(this.btnSearch);
+            this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.guna2Button3);
             this.Controls.Add(this.dgvLags);
             this.Controls.Add(this.guna2CustomGradientPanel5);
@@ -288,6 +319,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLags)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -307,5 +339,7 @@
         private System.Windows.Forms.DataGridView dgvLags;
         private System.Windows.Forms.Timer timer1;
         private Guna.UI2.WinForms.Guna2Button guna2Button3;
+        private Guna.UI2.WinForms.Guna2Button btnSearch;
+        private System.Windows.Forms.TextBox txtSearch;
     }
 }

@@ -59,6 +59,9 @@
             this.lblSecurity = new System.Windows.Forms.Label();
             this.lblInfo = new System.Windows.Forms.Label();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.txtpfp = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.guna2Panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -367,6 +370,9 @@
             this.guna2Panel1.BorderColor = System.Drawing.Color.Black;
             this.guna2Panel1.BorderRadius = 5;
             this.guna2Panel1.BorderThickness = 1;
+            this.guna2Panel1.Controls.Add(this.btnAdd);
+            this.guna2Panel1.Controls.Add(this.txtpfp);
+            this.guna2Panel1.Controls.Add(this.label7);
             this.guna2Panel1.Controls.Add(this.label5);
             this.guna2Panel1.Controls.Add(this.btnClear);
             this.guna2Panel1.Controls.Add(this.btnSubmit);
@@ -400,6 +406,37 @@
             this.guna2Panel1.Name = "guna2Panel1";
             this.guna2Panel1.Size = new System.Drawing.Size(822, 382);
             this.guna2Panel1.TabIndex = 35;
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.BackColor = System.Drawing.Color.MidnightBlue;
+            this.btnAdd.Font = new System.Drawing.Font("Mongolian Baiti", 12F, System.Drawing.FontStyle.Bold);
+            this.btnAdd.ForeColor = System.Drawing.Color.White;
+            this.btnAdd.Location = new System.Drawing.Point(181, 195);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(81, 28);
+            this.btnAdd.TabIndex = 48;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = false;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click_1);
+            // 
+            // txtpfp
+            // 
+            this.txtpfp.Location = new System.Drawing.Point(268, 195);
+            this.txtpfp.Multiline = true;
+            this.txtpfp.Name = "txtpfp";
+            this.txtpfp.Size = new System.Drawing.Size(186, 28);
+            this.txtpfp.TabIndex = 47;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Mongolian Baiti", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(265, 175);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(53, 16);
+            this.label7.TabIndex = 46;
+            this.label7.Text = "Profile:";
             // 
             // frmUpdateInActive
             // 
@@ -449,5 +486,8 @@
         public System.Windows.Forms.Label lblSecurity;
         public System.Windows.Forms.Label lblInfo;
         public Guna.UI2.WinForms.Guna2Panel guna2Panel1;
+        public System.Windows.Forms.Button btnAdd;
+        public System.Windows.Forms.TextBox txtpfp;
+        public System.Windows.Forms.Label label7;
     }
 }

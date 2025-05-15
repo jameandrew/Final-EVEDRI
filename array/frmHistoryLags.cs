@@ -22,6 +22,15 @@ namespace array
             InitializeComponent();
             studname = name;
             btnStuName.Text = name;
+            if (!string.IsNullOrEmpty(Getname.ProfileImagePath) && System.IO.File.Exists(Getname.ProfileImagePath))
+            {
+                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBox1.Image = Image.FromFile(Getname.ProfileImagePath);
+            }
+            else
+            {
+                pictureBox1.Image = null;
+            }
         }
 
         private void frmHistoryLags_Load(object sender, EventArgs e)
@@ -77,6 +86,34 @@ namespace array
         private void guna2Button3_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            string searchValue = txtSearch.Text.Trim().ToLower();
+
+            if (string.IsNullOrWhiteSpace(searchValue))
+            {
+                MessageBox.Show("Please enter a search keyword.");
+                return;
+            }
+            Workbook book = new Workbook();
+            book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
+            Worksheet sheet = book.Worksheets[0];
+            DataTable dt = sheet.ExportDataTable();
+
+            DataRow[] activeRows = dt.Select("STATUS = '1'");
+            DataTable filtered = dt.Clone();
+
+            foreach (DataRow row in activeRows)
+            {
+                if (row.ItemArray.Any(cell => cell != null && cell.ToString().ToLower().Contains(searchValue)))
+                {
+                    filtered.ImportRow(row);
+                }
+            }
+
+            dgvLags.DataSource = filtered;
         }
     }
 }

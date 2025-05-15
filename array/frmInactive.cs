@@ -23,6 +23,15 @@ namespace array
             LoadInActiveStudents();
             studname = name;
             btnStuName.Text = name;
+            if (!string.IsNullOrEmpty(Getname.ProfileImagePath) && System.IO.File.Exists(Getname.ProfileImagePath))
+            {
+                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBox1.Image = Image.FromFile(Getname.ProfileImagePath);
+            }
+            else
+            {
+                pictureBox1.Image = null;
+            }
         }
 
         public void LoadInActiveStudents()
@@ -160,31 +169,20 @@ namespace array
             string Username = dgvActive.Rows[r].Cells[5].Value.ToString();
             string Password = dgvActive.Rows[r].Cells[6].Value.ToString();
             string Course = dgvActive.Rows[r].Cells[7].Value.ToString();
+            string Age = dgvActive.Rows[r].Cells[8].Value.ToString();
+            string EMail = dgvActive.Rows[r].Cells[10].Value.ToString();
+            string pict = dgvActive.Rows[r].Cells[11].Value.ToString();
 
             form.txtSaying.Text = saying;
             form.txtUname.Text = Username;
             form.txtPword.Text = Password;
-            form.cmbCourse.Text = Course;            
+            form.cmbCourse.Text = Course;         
+            form.lblAge.Text = Age;
+            form.txtEmail.Text = EMail;
+            form.txtpfp.Text = pict;
 
             form.Show();
         }
-
-        private void guna2Button5_Click(object sender, EventArgs e)
-        {
-            Workbook book = new Workbook();
-            book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
-            Worksheet sheet = book.Worksheets[0];
-
-            int row = dgvActive.CurrentCell.RowIndex + 2;
-            sheet.Range[row, 9].Value = "0";
-
-            book.SaveToFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx", ExcelVersion.Version2016);
-
-            DataTable dt = sheet.ExportDataTable();
-            dgvActive.DataSource = dt;
-        }
-
-
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
@@ -195,8 +193,6 @@ namespace array
                 MessageBox.Show("Please enter a search keyword.");
                 return;
             }
-
-            // Reload the active students to get the original DataTable
             Workbook book = new Workbook();
             book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
             Worksheet sheet = book.Worksheets[0];
@@ -207,7 +203,6 @@ namespace array
 
             foreach (DataRow row in activeRows)
             {
-                // Check all columns if any cell contains the search term
                 if (row.ItemArray.Any(cell => cell != null && cell.ToString().ToLower().Contains(searchValue)))
                 {
                     filtered.ImportRow(row);
@@ -219,7 +214,11 @@ namespace array
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-
+            if (dgvActive.Rows.Count <= 1)
+            {
+                MessageBox.Show("You cannot restore the last remaining student.", "Action Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             DialogResult result = MessageBox.Show("Do you want to restore this student?", "Confirm Restore", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result != DialogResult.Yes)
@@ -236,6 +235,11 @@ namespace array
 
             LoadInActiveStudents();
             MessageBox.Show("Student marked as active.");
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

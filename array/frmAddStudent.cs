@@ -34,6 +34,15 @@ namespace array
             studname = name;
             btnStuName.Text = name;
             dateTimePicker1_ValueChanged(null, null);
+            if (!string.IsNullOrEmpty(Getname.ProfileImagePath) && System.IO.File.Exists(Getname.ProfileImagePath))
+            {
+                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBox1.Image = Image.FromFile(Getname.ProfileImagePath);
+            }
+            else
+            {
+                pictureBox1.Image = null;
+            }
         }
 
         private void btnDashboard_Click(object sender, EventArgs e)
@@ -71,6 +80,7 @@ namespace array
         {
             lags.Lags(btnStuName.Text, "Add a student");
             Form2 frm = new Form2(studname);
+            Errors();
             Workbook book = new Workbook();
             book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
             Worksheet sheet = book.Worksheets[0];
@@ -83,6 +93,45 @@ namespace array
             Password = "";
             Course = "";
             Email = "";
+
+            bool isUsernameTaken = false;
+            bool isPasswordTaken = false;
+
+            for (int i = 2; i <= sheet.LastRow; i++)
+            {
+                string existingUsername = sheet.Range[i, 6]?.Value?.Trim() ?? "";
+                string existingPassword = sheet.Range[i, 7]?.Value?.Trim() ?? "";
+
+                if (txtUname.Text.Trim().Equals(existingUsername, StringComparison.OrdinalIgnoreCase))
+                {
+                    isUsernameTaken = true;
+                }
+
+                if (txtPword.Text.Trim().Equals(existingPassword, StringComparison.Ordinal))
+                {
+                    isPasswordTaken = true;
+                }
+
+                if (isUsernameTaken || isPasswordTaken)
+                    break;
+            }
+
+            if (isUsernameTaken && isPasswordTaken)
+            {
+                MessageBox.Show("Both the username and password are already taken. Please choose different credentials.");
+                return;
+            }
+            else if (isUsernameTaken)
+            {
+                MessageBox.Show("The username is already taken. Please choose another one.");
+                return;
+            }
+            else if (isPasswordTaken)
+            {
+                MessageBox.Show("The password is already taken. Please choose a different one.");
+                return;
+            }
+
 
             if (!Getname.EmailValid(txtEmail.Text))
             {
@@ -104,15 +153,15 @@ namespace array
             }
             if (chkBadminton.Checked)
             {
-                hobbies += chkBadminton.Text + ", ";
+                hobbies += chkBadminton.Text;
             }
             if (chkBasketball.Checked)
             {
-                hobbies += chkBasketball.Text + " , ";
+                hobbies += chkBasketball.Text;
             }
             if (chkVolleyball.Checked)
             {
-                hobbies += chkVolleyball.Text + " , ";
+                hobbies += chkVolleyball.Text;
             }
             if (cmbColor.SelectedIndex == 0)
             {
@@ -171,6 +220,7 @@ namespace array
             sheet.Range[row, 9].Value = age.ToString();
             sheet.Range[row, 10].Value = txtEmail.Text;
             sheet.Range[row, 11].Value = "1";
+            sheet.Range[row, 12].Value = txtPfp.Text;
             book.SaveToFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx", ExcelVersion.Version2016);
 
             DataTable dt = sheet.ExportDataTable();
@@ -188,6 +238,9 @@ namespace array
             txtPword.Clear();
             cmbCourse.SelectedIndex = -1;
             txtEmail.Clear();
+            txtPfp.Clear();
+            lblAge.Text= "";
+
         }
 
         private void btnDisplayAll_Click(object sender, EventArgs e)
@@ -227,7 +280,7 @@ namespace array
         {
             lags.Lags(btnStuName.Text, "Log-Out");
             LogIn logIn = new LogIn();
-            logIn.ShowDialog();
+            logIn.Show();
             this.Hide();
         }
 
@@ -246,11 +299,15 @@ namespace array
         private void guna2Button4_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            if(dialog.ShowDialog() == DialogResult.OK)
+            dialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.jfif";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
                 txtPfp.Text = dialog.FileName;
+                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             }
         }
+
 
         private int CalculateAge(DateTime birthDate)
         {
@@ -270,6 +327,24 @@ namespace array
             DateTime birthDate = dtpAge.Value;
             int age = CalculateAge(birthDate);
             lblAge.Text = age.ToString();
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            txtName.Clear();
+            rdbFemale.Checked = false;
+            rdbMale.Checked = false;
+            chkBadminton.Checked = false;
+            chkBasketball.Checked = false;
+            chkVolleyball.Checked = false;
+            cmbColor.SelectedIndex = -1;
+            txtSaying.Clear();
+            txtUname.Clear();
+            txtPword.Clear();
+            cmbCourse.SelectedIndex = -1;
+            txtEmail.Clear();
+            txtPfp.Clear();
+            lblAge.Text = "";
         }
     }
 }

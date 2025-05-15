@@ -18,6 +18,30 @@ namespace array
             InitializeComponent();
         }
 
+        public void Errors()
+        {
+            if (string.IsNullOrWhiteSpace(txtName.Text) || string.IsNullOrWhiteSpace(txtEmail.Text)
+               || string.IsNullOrWhiteSpace(txtPword.Text) || string.IsNullOrWhiteSpace(txtSaying.Text)
+               || string.IsNullOrWhiteSpace(txtUname.Text) || string.IsNullOrWhiteSpace(txtpfp.Text))
+               
+            {
+                MessageBox.Show("Please Input the empty fields", "ERROR", MessageBoxButtons.RetryCancel, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            if (!rdbMale.Checked && !rdbFemale.Checked)
+            {
+                MessageBox.Show("Please select a gender", "ERROR", MessageBoxButtons.RetryCancel, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            if (!chkBadminton.Checked && !chkBadminton.Checked && !chkVolleyball.Checked)
+            {
+                MessageBox.Show("Please select your hobby", "ERROR", MessageBoxButtons.RetryCancel, MessageBoxIcon.Exclamation);
+                return;
+            }
+        }
+
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             frmActive form = (frmActive)Application.OpenForms["frmActive"];
@@ -25,6 +49,7 @@ namespace array
             string hobby = "";
             string gender = "";
             string favColor = "";
+            Errors();
 
             Workbook book = new Workbook();
             book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
@@ -41,10 +66,11 @@ namespace array
                 if (chkVolleyball.Checked) hobbies.Add("Volleyball");
                 if (chkBasketball.Checked) hobbies.Add("Basketball");
                 if (chkBadminton.Checked) hobbies.Add("Badminton");
-                hobby = string.Join(", ", hobbies);
 
                 if (cmbColor.SelectedIndex >= 0)
                     favColor = cmbColor.Text;
+                int age = DateTime.Now.Year - dtpAge.Value.Year;
+                if (DateTime.Now < dtpAge.Value.AddYears(age)) age--;
 
                 update.Cells[0].Value = txtName.Text;
                 update.Cells[1].Value = gender;
@@ -63,6 +89,7 @@ namespace array
                 sheet.Range[row, 6].Value = txtUname.Text;
                 sheet.Range[row, 7].Value = txtPword.Text;
                 sheet.Range[row, 10].Value = txtEmail.Text;
+                sheet.Range[row, 12].Value = txtpfp.Text;   
 
                 book.SaveToFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx", ExcelVersion.Version2016);
             }
@@ -79,6 +106,37 @@ namespace array
             txtPword.Clear();
             txtEmail.Clear();
             cmbCourse.SelectedIndex = -1;
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.jfif";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                txtpfp.Text = dialog.FileName;
+            }
+        }
+
+        private int CalculateAge(DateTime birthDate)
+        {
+            DateTime today = DateTime.Today;
+            int age = today.Year - birthDate.Year;
+
+            if (birthDate.Date > today.AddYears(-age))
+            {
+                age--;
+            }
+
+            return age;
+        }
+
+        private void dtpAge_ValueChanged(object sender, EventArgs e)
+        {
+            DateTime birthDate = dtpAge.Value;
+            int age = CalculateAge(birthDate);
+            lblAge.Text = age.ToString();
         }
     }
     

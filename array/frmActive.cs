@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
+using DrawingImage = System.Drawing.Image;
 using System.Windows.Forms;
 
 namespace array
@@ -23,6 +24,15 @@ namespace array
             LoadActiveStudents();
             studname = name;
             btnStuName.Text = name;
+            if (!string.IsNullOrEmpty(Getname.ProfileImagePath) && System.IO.File.Exists(Getname.ProfileImagePath))
+            {
+                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBox1.Image = DrawingImage.FromFile(Getname.ProfileImagePath);
+            }
+            else
+            {
+                pictureBox1.Image = null;
+            }
         }
         public void LoadActiveStudents()
         {
@@ -112,7 +122,6 @@ namespace array
                 return;
             }
 
-            // Reload the active students to get the original DataTable
             Workbook book = new Workbook();
             book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
             Worksheet sheet = book.Worksheets[0];
@@ -123,7 +132,6 @@ namespace array
 
             foreach (DataRow row in activeRows)
             {
-                // Check all columns if any cell contains the search term
                 if (row.ItemArray.Any(cell => cell != null && cell.ToString().ToLower().Contains(searchValue)))
                 {
                     filtered.ImportRow(row);
@@ -198,17 +206,29 @@ namespace array
             string Username = dgvAvtive.Rows[r].Cells[5].Value.ToString();
             string Password = dgvAvtive.Rows[r].Cells[6].Value.ToString();
             string Course = dgvAvtive.Rows[r].Cells[7].Value.ToString();
+            string Age = dgvAvtive.Rows[r].Cells[9].Value.ToString();
+            string EMail = dgvAvtive.Rows[r].Cells[10].Value.ToString();
+            string pict = dgvAvtive.Rows[r].Cells[12].Value.ToString();
 
             form.txtSaying.Text = saying;
             form.txtUname.Text = Username;
             form.txtPword.Text = Password;
             form.cmbCourse.Text = Course;
+            form.lblAge.Text = Age;
+            form.txtEmail.Text = EMail;
+            form.txtpfp.Text = pict;
 
             form.Show();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            if (dgvAvtive.Rows.Count <= 1)
+            {
+                MessageBox.Show("You cannot delete the last remaining student.", "Action Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             DialogResult result = MessageBox.Show("Do you want to delete this student?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result != DialogResult.Yes)
                 return;
