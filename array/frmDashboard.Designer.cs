@@ -838,8 +838,6 @@
         private Guna.UI2.WinForms.Guna2Button guna2Button2;
         private Guna.UI2.WinForms.Guna2Button btnInactStud;
         private Guna.UI2.WinForms.Guna2Button btnActSud;
-        private Guna.UI2.WinForms.Guna2Button btnDashboard;
-        private Guna.UI2.WinForms.Guna2Button btnStuName;
         private Guna.UI2.WinForms.Guna2Button btnDate;
         private Guna.UI2.WinForms.Guna2Button btnTIme;
         private Guna.UI2.WinForms.Guna2Button guna2Button3;
@@ -854,5 +852,7 @@
         private System.Windows.Forms.Label label17;
         private Guna.UI2.WinForms.Guna2Button btnAdd;
         public System.Windows.Forms.PictureBox pictureBox1;
+        public Guna.UI2.WinForms.Guna2Button btnDashboard;
+        public Guna.UI2.WinForms.Guna2Button btnStuName;
     }
 }

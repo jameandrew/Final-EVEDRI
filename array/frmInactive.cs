@@ -1,13 +1,8 @@
 ﻿using Guna.UI2.AnimatorNS;
 using Spire.Xls;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace array
@@ -17,12 +12,14 @@ namespace array
         Getname name;
         private string studname;
         frmLags lags = new frmLags();
+
         public frmInactive(string name)
         {
             InitializeComponent();
             LoadInActiveStudents();
             studname = name;
             btnStuName.Text = name;
+
             if (!string.IsNullOrEmpty(Getname.ProfileImagePath) && System.IO.File.Exists(Getname.ProfileImagePath))
             {
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -34,7 +31,7 @@ namespace array
             }
         }
 
-        public void LoadInActiveStudents()
+         public void LoadInActiveStudents()
         {
             Workbook book = new Workbook();
             book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
@@ -43,7 +40,7 @@ namespace array
             DataTable dt = sheet.ExportDataTable();
 
             DataRow[] activeRows = dt.Select("STATUS = '0'");
-            DataTable filtered = dt.Clone(); 
+            DataTable filtered = dt.Clone();
 
             foreach (DataRow row in activeRows)
             {
@@ -55,8 +52,8 @@ namespace array
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            btnTIme.Text = DateTime.Now.ToString("hh: mm: ss tt");
-            btnDate.Text = DateTime.Now.ToString("MM/ dd/ yyyy");
+            btnTIme.Text = DateTime.Now.ToString("hh:mm:ss tt");
+            btnDate.Text = DateTime.Now.ToString("MM/dd/yyyy");
         }
 
         private void frmInactive_Load(object sender, EventArgs e)
@@ -106,9 +103,9 @@ namespace array
             this.Hide();
         }
 
-        private void dgvAvtive_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void dgvActive_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            frmUpdateInActive form = new frmUpdateInActive();
+            frmUpdateInActive form = new frmUpdateInActive(studname);
             int r = dgvActive.CurrentCell.RowIndex;
             form.lblID.Text = r.ToString();
             form.txtName.Text = dgvActive.Rows[r].Cells[0].Value.ToString();
@@ -150,6 +147,27 @@ namespace array
 
             }
 
+            string course = dgvActive.Rows[r].Cells[7].Value.ToString();
+
+            if (course == "BSIT")
+            {
+                form.cmbColor.SelectedIndex = 0;
+            }
+            if (course == "BSCS")
+            {
+                form.cmbColor.SelectedIndex = 1;
+            }
+            if (course == "BSFM")
+            {
+                form.cmbColor.SelectedIndex = 2;
+            }
+
+            int age = DateTime.Now.Year - form.dtpAge.Value.Year;
+            if (DateTime.Now < form.dtpAge.Value.AddYears(age)) age--;
+
+            string saying = dgvActive.Rows[r].Cells[4].Value.ToString();
+            string Username = dgvActive.Rows[r].Cells[5].Value.ToString();
+            string Password = dgvActive.Rows[r].Cells[6].Value.ToString();
             string favcolor = dgvActive.Rows[r].Cells[3].Value.ToString();
 
             if (favcolor == "Blue")
@@ -165,10 +183,6 @@ namespace array
                 form.cmbColor.SelectedIndex = 2;
             }
 
-            string saying = dgvActive.Rows[r].Cells[4].Value.ToString();
-            string Username = dgvActive.Rows[r].Cells[5].Value.ToString();
-            string Password = dgvActive.Rows[r].Cells[6].Value.ToString();
-            string Course = dgvActive.Rows[r].Cells[7].Value.ToString();
             string Age = dgvActive.Rows[r].Cells[8].Value.ToString();
             string EMail = dgvActive.Rows[r].Cells[10].Value.ToString();
             string pict = dgvActive.Rows[r].Cells[11].Value.ToString();
@@ -176,7 +190,6 @@ namespace array
             form.txtSaying.Text = saying;
             form.txtUname.Text = Username;
             form.txtPword.Text = Password;
-            form.cmbCourse.Text = Course;         
             form.lblAge.Text = Age;
             form.txtEmail.Text = EMail;
             form.txtpfp.Text = pict;
@@ -193,30 +206,31 @@ namespace array
                 MessageBox.Show("Please enter a search keyword.");
                 return;
             }
-            Workbook book = new Workbook();
-            book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
-            Worksheet sheet = book.Worksheets[0];
-            DataTable dt = sheet.ExportDataTable();
 
-            DataRow[] activeRows = dt.Select("STATUS = '1'");
-            DataTable filtered = dt.Clone();
-
-            foreach (DataRow row in activeRows)
+            foreach (DataGridViewRow row in dgvActive.Rows)
             {
-                if (row.ItemArray.Any(cell => cell != null && cell.ToString().ToLower().Contains(searchValue)))
-                {
-                    filtered.ImportRow(row);
-                }
-            }
+                bool matchFound = false;
 
-            dgvActive.DataSource = filtered;
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (cell.Value != null && cell.Value.ToString().ToLower().Contains(searchValue))
+                    {
+                        matchFound = true;
+                        break;
+                    }
+                }
+
+                row.DefaultCellStyle.BackColor = matchFound ? Color.Yellow : Color.White;
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dgvActive.Rows.Count <= 1)
+            lags.Lags(btnStuName.Text, "Restored a student");
+
+            if (dgvActive.CurrentCell == null)
             {
-                MessageBox.Show("You cannot restore the last remaining student.", "Action Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please select a student to restore.", "No selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -228,18 +242,58 @@ namespace array
             book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
             Worksheet sheet = book.Worksheets[0];
 
-            int row = dgvActive.CurrentCell.RowIndex + 2;
-            sheet.Range[row, 11].Value = "1";
+            string selectedName = dgvActive.CurrentRow.Cells[0].Value.ToString();
+
+            int excelRow = -1;
+            for (int i = 2; i <= sheet.LastRow; i++)
+            {
+                if (sheet.Range[i, 1].Value == selectedName)
+                {
+                    excelRow = i;
+                    break;
+                }
+            }
+
+            if (excelRow == -1)
+            {
+                MessageBox.Show("Student not found in Excel.");
+                return;
+            }
+
+            sheet.Range[excelRow, 10].Value = "1";
 
             book.SaveToFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx", ExcelVersion.Version2016);
 
             LoadInActiveStudents();
+
+            dgvActive.ClearSelection();
+            if (dgvActive.Rows.Count > 0)
+            {
+                dgvActive.CurrentCell = dgvActive.Rows[0].Cells[0];
+                dgvActive.Rows[0].Selected = true;
+            }
+
             MessageBox.Show("Student marked as active.");
         }
 
-        private void txtSearch_TextChanged(object sender, EventArgs e)
+        private void btnInactStud_Click(object sender, EventArgs e)
         {
+            frmInactive frm = new frmInactive(studname);
+            frm.Show();
+            this.Hide();
+        }
 
+        private int CalculateAge(DateTime birthDate)
+        {
+            DateTime today = DateTime.Today;
+            int age = today.Year - birthDate.Year;
+
+            if (birthDate.Date > today.AddYears(-age))
+            {
+                age--;
+            }
+
+            return age;
         }
     }
 }

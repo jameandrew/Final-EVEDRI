@@ -170,6 +170,7 @@
             this.btnInactStud.Size = new System.Drawing.Size(249, 45);
             this.btnInactStud.TabIndex = 52;
             this.btnInactStud.Text = "InActive Student";
+            this.btnInactStud.Click += new System.EventHandler(this.btnInactStud_Click);
             // 
             // btnActSud
             // 
@@ -228,7 +229,7 @@
             this.dgvActive.Name = "dgvActive";
             this.dgvActive.Size = new System.Drawing.Size(703, 503);
             this.dgvActive.TabIndex = 24;
-            this.dgvActive.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvAvtive_CellMouseDoubleClick);
+            this.dgvActive.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvActive_CellMouseDoubleClick);
             // 
             // guna2Elipse1
             // 
@@ -287,7 +288,6 @@
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(194, 26);
             this.txtSearch.TabIndex = 33;
-            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // btnSearch
             // 

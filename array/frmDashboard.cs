@@ -22,8 +22,8 @@ namespace array
         public frmDashboard(string name)
         {
             InitializeComponent();
-            lblTotalAct.Text = ShowTotal(11, "1").ToString();
-            lblTotalInact.Text = ShowTotal(11, "0").ToString();
+            lblTotalAct.Text = ShowTotal(10, "1").ToString();
+            lblTotalInact.Text = ShowTotal(10, "0").ToString();
             lblTotalMale.Text = ShowTotal(2, "Male").ToString();
             lblTotalFemale.Text = ShowTotal(2, "Female").ToString();
             lblRed.Text = ShowTotal(4, "Red").ToString();

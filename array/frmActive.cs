@@ -1,14 +1,7 @@
 ﻿using Spire.Xls;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.UI.WebControls;
-using DrawingImage = System.Drawing.Image;
 using System.Windows.Forms;
 
 namespace array
@@ -18,22 +11,25 @@ namespace array
         Getname name;
         private string studname;
         frmLags lags = new frmLags();
+
         public frmActive(string name)
         {
             InitializeComponent();
             LoadActiveStudents();
             studname = name;
             btnStuName.Text = name;
+
             if (!string.IsNullOrEmpty(Getname.ProfileImagePath) && System.IO.File.Exists(Getname.ProfileImagePath))
             {
                 pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                pictureBox1.Image = DrawingImage.FromFile(Getname.ProfileImagePath);
+                pictureBox1.Image = Image.FromFile(Getname.ProfileImagePath);
             }
             else
             {
                 pictureBox1.Image = null;
             }
         }
+
         public void LoadActiveStudents()
         {
             Workbook book = new Workbook();
@@ -43,7 +39,7 @@ namespace array
             DataTable dt = sheet.ExportDataTable();
 
             DataRow[] activeRows = dt.Select("STATUS = '1'");
-            DataTable filtered = dt.Clone(); 
+            DataTable filtered = dt.Clone();
 
             foreach (DataRow row in activeRows)
             {
@@ -56,8 +52,8 @@ namespace array
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            btnTIme.Text = DateTime.Now.ToString("hh: mm: ss tt");
-            btnDate.Text = DateTime.Now.ToString("MM/ dd/ yyyy");
+            btnTIme.Text = DateTime.Now.ToString("hh:mm:ss tt");
+            btnDate.Text = DateTime.Now.ToString("MM/dd/yyyy");
         }
 
         private void frmActive_Load(object sender, EventArgs e)
@@ -82,7 +78,9 @@ namespace array
 
         private void btnActSud_Click(object sender, EventArgs e)
         {
-
+            frmActive student = new frmActive(studname);
+            student.Show();
+            this.Hide();
         }
 
         private void btnInactStud_Click(object sender, EventArgs e)
@@ -122,33 +120,80 @@ namespace array
                 return;
             }
 
+            foreach (DataGridViewRow row in dgvAvtive.Rows)
+            {
+                bool matchFound = false;
+
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (cell.Value != null && cell.Value.ToString().ToLower().Contains(searchValue))
+                    {
+                        matchFound = true;
+                        break;
+                    }
+                }
+
+                row.DefaultCellStyle.BackColor = matchFound ? Color.Yellow : Color.White;
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            lags.Lags(btnStuName.Text, "Deleted a student");
+
+            if (dgvAvtive.CurrentCell == null)
+            {
+                MessageBox.Show("Please select a student to delete.", "No selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DialogResult result = MessageBox.Show("Do you want to delete this student?", "Confirm Restore", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result != DialogResult.Yes)
+                return;
+
             Workbook book = new Workbook();
             book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
             Worksheet sheet = book.Worksheets[0];
-            DataTable dt = sheet.ExportDataTable();
 
-            DataRow[] activeRows = dt.Select("STATUS = '1'");
-            DataTable filtered = dt.Clone();
+            string selectedName = dgvAvtive.CurrentRow.Cells[0].Value.ToString();
 
-            foreach (DataRow row in activeRows)
+            int excelRow = -1;
+            for (int i = 2; i <= sheet.LastRow; i++)
             {
-                if (row.ItemArray.Any(cell => cell != null && cell.ToString().ToLower().Contains(searchValue)))
+                if (sheet.Range[i, 1].Value == selectedName)
                 {
-                    filtered.ImportRow(row);
+                    excelRow = i;
+                    break;
                 }
             }
 
-            dgvAvtive.DataSource = filtered;
+            if (excelRow == -1)
+            {
+                MessageBox.Show("Student not found in Excel.");
+                return;
+            }
+
+            sheet.Range[excelRow, 10].Value = "0";
+
+            book.SaveToFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx", ExcelVersion.Version2016);
+
+            LoadActiveStudents();
+
+            dgvAvtive.ClearSelection();
+            if (dgvAvtive.Rows.Count > 0)
+            {
+                dgvAvtive.CurrentCell = dgvAvtive.Rows[0].Cells[0];
+                dgvAvtive.Rows[0].Selected = true;
+            }
+
+            MessageBox.Show("Student marked as inactive.");
         }
-
-
         private void dgvAvtive_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            frmUpdate form = new frmUpdate();
+            frmUpdate form = new frmUpdate(studname);
             int r = dgvAvtive.CurrentCell.RowIndex;
             form.lblID.Text = r.ToString();
             form.txtName.Text = dgvAvtive.Rows[r].Cells[0].Value.ToString();
-            form.txtEmail.Text = dgvAvtive.Rows[r].Cells[10].Value.ToString();
             string gender = dgvAvtive.Rows[r].Cells[1].Value.ToString();
             if (gender == "Male")
             {
@@ -206,9 +251,9 @@ namespace array
             string Username = dgvAvtive.Rows[r].Cells[5].Value.ToString();
             string Password = dgvAvtive.Rows[r].Cells[6].Value.ToString();
             string Course = dgvAvtive.Rows[r].Cells[7].Value.ToString();
-            string Age = dgvAvtive.Rows[r].Cells[9].Value.ToString();
+            string Age = dgvAvtive.Rows[r].Cells[8].Value.ToString();
             string EMail = dgvAvtive.Rows[r].Cells[10].Value.ToString();
-            string pict = dgvAvtive.Rows[r].Cells[12].Value.ToString();
+            string pict = dgvAvtive.Rows[r].Cells[11].Value.ToString();
 
             form.txtSaying.Text = saying;
             form.txtUname.Text = Username;
@@ -221,30 +266,5 @@ namespace array
             form.Show();
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            if (dgvAvtive.Rows.Count <= 1)
-            {
-                MessageBox.Show("You cannot delete the last remaining student.", "Action Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            DialogResult result = MessageBox.Show("Do you want to delete this student?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result != DialogResult.Yes)
-                return;
-
-            Workbook book = new Workbook();
-            book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
-            Worksheet sheet = book.Worksheets[0];
-
-            int row = dgvAvtive.CurrentCell.RowIndex + 2; 
-            sheet.Range[row, 11].Value = "0"; 
-
-            book.SaveToFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx", ExcelVersion.Version2016);
-
-            LoadActiveStudents(); 
-            MessageBox.Show("Student marked as inactive.");
-
-        }
     }
 }

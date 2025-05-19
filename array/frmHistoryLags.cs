@@ -97,23 +97,22 @@ namespace array
                 MessageBox.Show("Please enter a search keyword.");
                 return;
             }
-            Workbook book = new Workbook();
-            book.LoadFromFile(@"C:\Users\HF\Downloads\EVEDRI.xlsx");
-            Worksheet sheet = book.Worksheets[0];
-            DataTable dt = sheet.ExportDataTable();
 
-            DataRow[] activeRows = dt.Select("STATUS = '1'");
-            DataTable filtered = dt.Clone();
-
-            foreach (DataRow row in activeRows)
+            foreach (DataGridViewRow row in dgvLags.Rows)
             {
-                if (row.ItemArray.Any(cell => cell != null && cell.ToString().ToLower().Contains(searchValue)))
-                {
-                    filtered.ImportRow(row);
-                }
-            }
+                bool matchFound = false;
 
-            dgvLags.DataSource = filtered;
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (cell.Value != null && cell.Value.ToString().ToLower().Contains(searchValue))
+                    {
+                        matchFound = true;
+                        break;
+                    }
+                }
+
+                row.DefaultCellStyle.BackColor = matchFound ? Color.Yellow : Color.White;
+            }
         }
     }
 }
